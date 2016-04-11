@@ -9,7 +9,6 @@ Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 from options import PyDog4ApacheOptions
 from update import Updater
-from urllib2 import Request
 import os, traceback, sys, re, gzip, datetime, string, stat
 
 try:
