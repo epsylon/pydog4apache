@@ -189,7 +189,7 @@ class PyDog4Apache(object):
                             if descr is not None:
                                 key = self.check_visitants(descr)
                                 if key:
-                                    self.visitants["["+str(key.upper())+"]"] = str(date_visit) + "|" + str(str(folder+log) + "|" + ip + "|" + descr)
+                                    self.visitants[str(date_visit)] = "[" + str(key.upper()) + "]" + "|" + str(str(folder+log) + "|" + ip + "|" + descr)
                     f.close()
             except:
                 pass
