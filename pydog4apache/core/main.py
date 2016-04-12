@@ -189,7 +189,7 @@ class PyDog4Apache(object):
                             if descr is not None:
                                 key = self.check_visitants(descr)
                                 if key:
-                                    self.visitants[str(date_visit)] = "[" + str(key.upper()) + "]" + "|" + str(str(folder+log) + "|" + ip + "|" + descr)
+                                    self.visitants[str(ip)] = "[" + str(key.upper()) + "]" + "|" + str(str(descr) + "|" + str(date_visit) + "|" + str(folder+log))
                     f.close()
             except:
                 pass
@@ -208,7 +208,7 @@ class PyDog4Apache(object):
                 self.report.write(key + " -> " + val + "\n")
                 self.report.write("-"*12 + "\n")
         if not self.visitants.items():
-            print "[Info] - Not any 'keyword' found on your 'visitants'."
+            print "[Info] - Not any 'keyword' found on your 'visitants'.\n"
             if self.options.file:
                 self.report.write("Not any 'keyword' found on your 'visitants'.\n")
         if self.options.file: # close file containter
