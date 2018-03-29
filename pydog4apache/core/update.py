@@ -1,7 +1,7 @@
 #!/usr/bin/env python 
 # -*- coding: utf-8 -*-"
 """
-PyDog4Apache - 2016 - by psy (epsylon@riseup.net)
+PyDog4Apache - 2016/2018 - by psy (epsylon@riseup.net)
 
 You should have received a copy of the GNU General Public License along
 with PyDog4Apache; if not, write to the Free Software Foundation, Inc., 51
@@ -14,16 +14,16 @@ from subprocess import Popen as execute
 class Updater(object):     
     def __init__(self):
         GIT_REPOSITORY = "https://github.com/epsylon/pydog4apache"
-        rootDir = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '../../', ''))
+        rootDir = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', ''))
         if not os.path.exists(os.path.join(rootDir, ".git")):
             print "Not any .git repository found!\n"
             print "="*30
-            print "\nYou should clone PyDog4Apache manually with:\n"
+            print "\nTo have working this feature, you should clone UFONet with:\n"
             print "$ git clone %s" % GIT_REPOSITORY
-            print ""
         else:
-            checkout = execute("git pull", shell=True, stdout=PIPE, stderr=PIPE).communicate()[0]
-            if "Fast-forward" in checkout:
-                print "Congratulations!! PyDog4Apache has been updated... ;-)\n"
+            checkout = execute("git checkout . && git pull", shell=True, stdout=PIPE, stderr=PIPE).communicate()[0]
+            print checkout
+            if not "Already up-to-date" in checkout:
+                print "Congratulations!! pydog4apache has been updated... ;-)\n"
             else:
-                print "Your PyDog4Apache doesn't need to be updated... ;-)\n"
+                print "Your pydog4apache doesn't need to be updated... ;-)\n"

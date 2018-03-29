@@ -6,7 +6,8 @@ Apache web logs sneaker - by psy
   on Whois description of the IPs of your website visitors by -automagically- analyzing 
   Apache logs provided (you can set folders of logs to -sneak- all your projects).
 
-  Also you can generate a report with results or send them to a list of email recipients.
+  Also you can generate a report with results or send them to a list of email recipients
+  like an alert.
 
 ----------
 
