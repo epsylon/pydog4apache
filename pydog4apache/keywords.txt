@@ -1,8 +1,10 @@
 Estate
+Bureau
 Army
 Association
 Bank
 Business
+Center
 Company
 Office
 Military
@@ -10,6 +12,7 @@ Federal
 Consultory
 Academy
 Financial
+International
 Department
 Lawyers
 Ministery
@@ -29,6 +32,7 @@ School
 Laboratory
 Society
 Estado
+Bufete
 Ejercito
 Asociacion
 Banco
@@ -45,10 +49,13 @@ Agencia
 Policia
 Tienda
 Gobierno
+Compañia
 Nacional
 Educacion
+Centro
 Equipo
 Grupo
+Internacional
 Universidad
 Industria
 Escuela

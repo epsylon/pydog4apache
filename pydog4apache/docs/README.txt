@@ -7,7 +7,7 @@
 |_|    \__, |____/ \___/ \__, |  |_|/_/   \_\ .__/ \__,_|\___|_| |_|\___|
        |___/             |___/              |_|                          
 
-Apache web logs sneaker - by psy 
+Apache web logs sneaker - 2016/2020 - by psy 
 
 ===========================================================================
 
@@ -15,7 +15,7 @@ Apache web logs sneaker - by psy
 # Project info
 ###############################
 
-  Web: https://github.com/epsylon/pydog2apache [http://03c8.net]
+  Web: https://pydog4apache.03c8.net/ [https://03c8.net]
 
 ###############################
 # Summary
@@ -34,17 +34,18 @@ Apache web logs sneaker - by psy
 # Installing
 ###############################
 
-  PyDog4Apache runs on many platforms.  It requires Python (2.x.y) and the following libraries:
+  PyDog4Apache runs on many platforms. It requires Python (3.x.y) and the following libraries:
 
-     python-pip - alternative Python package installer
+      python3-pip - Python package installer
+      ipwhois (0.10.3)  - Retrieve and parse whois data for IPv4 and IPv6 addresses.
 
   On Debian-based systems (ex: Ubuntu), run: 
 
-     sudo apt-get install python-pip && sudo pip install ipwhois
+      sudo apt-get install python3-pip && pip3 install ipwhois==0.10.3 --user
 
   Source libs:
 
-     * Pypi-ipwhois: https://pypi.python.org/pypi/ipwhois/
+      * Pypi-ipwhois: https://pypi.python.org/pypi/ipwhois/
 
 ###############################
 # HowTo
@@ -63,28 +64,28 @@ Apache web logs sneaker - by psy
       -n EMAILS    notify via email (foo@email.net,bar@email.org,...)
 
 ###############################
-# Usage
+# Examples
 ###############################
 
   Verbose:
 
-    ./pydog4apache -v 
+    python3 pydog4apache -v
 
   Generate report file:
 
-    ./pydog4apache -r my_visitants.txt
+    python3 pydog4apache -r 'visitants.txt'
 
   Notify results via email to some recipients:
 
-    ./pydog4apache -n='root@localhost,foo@email.org,bar@email.net'
+    python3 pydog4apache -n='root@localhost,foo@email.org,bar@email.net'
 
   Combine options:
 
-    ./pydog4apache -v -r my_visitants.txt -n epsylon@riseup.net
+    python3 pydog4apache -v -r 'visitants.txt' -n 'epsylon@riseup.net'
 
   Launch it as daemon (notify via email when finish):
 
-    ./pydog4apache -n epsylon@riseup.net &
+    python3 pydog4apache -n 'epsylon@riseup.net' &
 
 ###############################
 # Updating
@@ -96,7 +97,7 @@ Apache web logs sneaker - by psy
 
   To check your version you should launch:
 
-    ./pydog4apache --update
+    python3 pydog4apache --update
 
   This will update the tool automatically removing all files from old package.
 
@@ -105,7 +106,17 @@ Apache web logs sneaker - by psy
 ###############################
 
 --------------------------
+  08.01.2020 : v.0.2
+--------------------------
   11.04.2016 : v.0.1b
 --------------------------
+
+###############################
+# Contribute
+###############################
+
+ To make donations use the following hash:
+  
+  - Bitcoin: 19aXfJtoYJUoXEZtjNwsah2JKN9CK5Pcjw
 
 ############
