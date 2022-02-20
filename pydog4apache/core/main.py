@@ -185,6 +185,8 @@ class PyDog4Apache(object):
                                     date_visit = d.split(sep2, 1)[1]
                                 descr = self.extract_whois(ip)
                                 if descr is not None:
+                                    if self.options.verbose:
+                                        print("    |-> WHOIS Description:", descr)
                                     key = self.check_visitants(descr)
                                     if key:
                                         self.visitants[str(ip)] = "[ " + str(key.upper()) + " ]" + " | " + str(str(descr) + " | " + str(date_visit) + " | " + str(folder+log))
@@ -195,7 +197,7 @@ class PyDog4Apache(object):
         if self.options.file: # export results to file
             namefile = str(self.options.file)
             self.report = open(namefile, 'w')
-            self.report.write("# Apache web logs sneaker - 2016/2020 - by psy (https://03c8.net)\n")
+            self.report.write("# Apache web logs sneaker - 2016/2022 - by psy (https://03c8.net)\n")
             self.report.write("# Project: https://code.03c8.net/epsylon/pydog4apache\n")
             self.report.write("# Reported at: " + str(datetime.datetime.now()) + "\n\n")
         for key,val in list(self.visitants.items()):
@@ -221,7 +223,7 @@ class PyDog4Apache(object):
             import smtplib, socket
             from email.mime.text import MIMEText
             self.notify = open('tempmail', 'w')
-            self.notify.write("# Apache web logs sneaker - 2016/2020 - by psy (https://03c8.net)\n")
+            self.notify.write("# Apache web logs sneaker - 2016/2022 - by psy (https://03c8.net)\n")
             self.notify.write("# Project: https://code.03c8.net/epsylon/pydog4apache\n")
             self.notify.write("# Reported at: " + str(datetime.datetime.now()) + "\n\n")
             self.notify.write("Logs Analyzed:\n\n")

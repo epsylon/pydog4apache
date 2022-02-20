@@ -5,7 +5,7 @@
 
 #### Info:
 
-Apache web logs sneaker - 2016/2020 - by psy [03c8.net]
+Apache web logs sneaker - 2016/2022 - by psy [03c8.net]
 
   With this tool you can search for specific keywords (such as: government, police...) 
   on Whois description of the IPs of your website visitors by -automagically- analyzing 

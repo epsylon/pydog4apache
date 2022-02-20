@@ -64,3 +64,5 @@ Sociedad
 Contraloria
 Guardia
 Academia
+Tor
+Proxy
