@@ -1,7 +1,7 @@
 #!/usr/bin/env python3 
 # -*- coding: utf-8 -*-"
 """
-PyDog4Apache - 2016/2020 - by psy (epsylon@riseup.net)
+PyDog4Apache - 2016/2022 - by psy (epsylon@riseup.net)
 
 You should have received a copy of the GNU General Public License along
 with PyDog4Apache; if not, write to the Free Software Foundation, Inc., 51
@@ -99,7 +99,7 @@ class PyDog4Apache(object):
         try:
             if re.match(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}', ip): # only IPs
                 w = IPWhois(ip, timeout=5) # timeout 5
-                res = w.lookup(retry_count=2) # legacy whois / retries 2
+                res = w.lookup_whois(retry_count=2) # legacy whois / retries 2
                 descr = res["nets"][0]['description']
             else:
                 descr = None
