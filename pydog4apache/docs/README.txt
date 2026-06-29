@@ -1,13 +1,13 @@
-=========================================================================== 
+===========================================================================
 
- ____        ____              _  _     _                     _          
-|  _ \ _   _|  _ \  ___   __ _| || |   / \   _ __   __ _  ___| |__   ___ 
+ ____        ____              _  _     _                     _
+|  _ \ _   _|  _ \  ___   __ _| || |   / \   _ __   __ _  ___| |__   ___
 | |_) | | | | | | |/ _ \ / _` | || |_ / _ \ | '_ \ / _` |/ __| '_ \ / _ |
 |  __/| |_| | |_| | (_) | (_| |__   _/ ___ \| |_) | (_| | (__| | | |  __/
 |_|    \__, |____/ \___/ \__, |  |_|/_/   \_\ .__/ \__,_|\___|_| |_|\___|
-       |___/             |___/              |_|                          
+       |___/             |___/              |_|
 
-Apache web logs sneaker - 2016/2022 - by psy 
+Apache web logs sneaker - 2016/2026 - by psy
 
 ===========================================================================
 
@@ -23,29 +23,52 @@ Apache web logs sneaker - 2016/2022 - by psy
 
   PyDog4Apache is an Apache web logs sneaker.
 
-  With this tool you can search for specific keywords (such as: government, police...) 
-  on Whois description of the IPs of your website visitors by -automagically- analyzing 
-  Apache logs provided (you can set folders of logs to manage all your projects).
+  It sends 'dogs' to sniff your Apache access logs and, for every visitor IP,
+  it queries its WHOIS record looking for specific keywords on the network
+  description (the organization that owns that IP range).
 
-  Also you can generate a report with results or send them to a list of email recipients
-  like an alert.
+  This way you can -automagically- discover *who* is really behind your
+  visitors: governments, police, military, intelligence, banks, universities,
+  AI crawlers (such as: Anthropic), cloud/hosting providers, datacenters... by
+  matching their WHOIS organization against the words listed on 'keywords.txt'.
+
+  You can set several folders of logs on 'sources.txt' to -sneak- all your
+  projects at once (compressed '.gz' logs are also analyzed).
+
+  Finally you can generate a report with the results or send them to a list of
+  email recipients like an alert.
 
 ###############################
 # Installing
 ###############################
 
-  PyDog4Apache runs on many platforms. It requires Python (3.x.y) and the following libraries:
+  PyDog4Apache runs on many platforms. It requires Python (3.x.y) and the
+  following libraries:
 
       python3-pip - Python package installer
-      ipwhois (0.10.3)  - Retrieve and parse whois data for IPv4 and IPv6 addresses.
+      ipwhois (1.3.0)  - Retrieve and parse whois data for IPv4 and IPv6 addresses.
 
-  On Debian-based systems (ex: Ubuntu), run: 
+  On Debian-based systems (ex: Ubuntu), run:
 
-      sudo apt-get install python3-pip && pip3 install ipwhois==0.10.3 --user
+      sudo apt-get install python3-pip && pip3 install ipwhois --user
+
+  Or to pin the tested version:
+
+      pip3 install -r docs/requirements.txt --user
 
   Source libs:
 
-      * Pypi-ipwhois: https://pypi.python.org/pypi/ipwhois/
+      * Pypi-ipwhois: https://pypi.org/project/ipwhois/
+
+###############################
+# Configuring
+###############################
+
+  - sources.txt  : one folder per line with the Apache logs to analyze
+                   (default: /var/log/apache2)
+
+  - keywords.txt : one keyword per line to look for on the WHOIS network
+                   description. Matching is case-insensitive and by substring.
 
 ###############################
 # HowTo
@@ -91,20 +114,21 @@ Apache web logs sneaker - 2016/2022 - by psy
 # Updating
 ###############################
 
-  PyDog4Apache implements an option to update the tool to the latest stable version.
+  PyDog4Apache implements an option to update the tool to the latest stable
+  version.
 
-  This feature can be used only if you have cloned it from GitHub respository.
+  This feature can be used only if you have cloned it from the Git repository.
 
-  To check your version you should launch:
+  To update your copy you should launch:
 
     python3 pydog4apache --update
-
-  This will update the tool automatically removing all files from old package.
 
 ###############################
 # Timelog
 ###############################
 
+--------------------------
+  29.06.2026 : v.0.3
 --------------------------
   08.01.2020 : v.0.2
 --------------------------
@@ -115,8 +139,9 @@ Apache web logs sneaker - 2016/2022 - by psy
 # Contribute
 ###############################
 
- To make donations use the following hash:
-  
-  - Bitcoin: 19aXfJtoYJUoXEZtjNwsah2JKN9CK5Pcjw
+ To make donations use the following hashes:
+
+  - Bitcoin [BTC]: 19aXfJtoYJUoXEZtjNwsah2JKN9CK5Pcjw
+  - Ecoin [ECO]: EZnYs33TG87ZzBWgADrj8653s3bPUqreW9
 
 ############

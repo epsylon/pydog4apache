@@ -1,7 +1,7 @@
 #!/usr/bin/env python3 
 # -*- coding: utf-8 -*-"
 """
-PyDog4Apache - 2016/2022 - by psy (epsylon@riseup.net)
+PyDog4Apache - 2016/2026 - by psy (epsylon@riseup.net)
 
 You should have received a copy of the GNU General Public License along
 with PyDog4Apache; if not, write to the Free Software Foundation, Inc., 51
@@ -197,7 +197,7 @@ class PyDog4Apache(object):
         if self.options.file: # export results to file
             namefile = str(self.options.file)
             self.report = open(namefile, 'w')
-            self.report.write("# Apache web logs sneaker - 2016/2022 - by psy (https://03c8.net)\n")
+            self.report.write("# Apache web logs sneaker - 2016/2026 - by psy (https://03c8.net)\n")
             self.report.write("# Project: https://code.03c8.net/epsylon/pydog4apache\n")
             self.report.write("# Reported at: " + str(datetime.datetime.now()) + "\n\n")
         for key,val in list(self.visitants.items()):
@@ -223,7 +223,7 @@ class PyDog4Apache(object):
             import smtplib, socket
             from email.mime.text import MIMEText
             self.notify = open('tempmail', 'w')
-            self.notify.write("# Apache web logs sneaker - 2016/2022 - by psy (https://03c8.net)\n")
+            self.notify.write("# Apache web logs sneaker - 2016/2026 - by psy (https://03c8.net)\n")
             self.notify.write("# Project: https://code.03c8.net/epsylon/pydog4apache\n")
             self.notify.write("# Reported at: " + str(datetime.datetime.now()) + "\n\n")
             self.notify.write("Logs Analyzed:\n\n")

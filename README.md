@@ -5,13 +5,20 @@
 
 #### Info:
 
-Apache web logs sneaker - 2016/2022 - by psy [03c8.net]
+Apache web logs sneaker - 2016/2026 - by psy [03c8.net]
 
-  With this tool you can search for specific keywords (such as: government, police...) 
-  on Whois description of the IPs of your website visitors by -automagically- analyzing 
-  Apache logs provided (you can set folders of logs to -sneak- all your projects).
+  PyDog4Apache sends 'dogs' to sniff your Apache access logs and, for every
+  visitor IP, it queries its WHOIS record looking for specific keywords on the
+  network description (the organization that owns that IP range).
 
-  Also you can generate a report with results or send them to a list of email recipients
+  This way you can -automagically- discover *who* is really behind your
+  visitors: governments, police, military, intelligence, banks, universities,
+  AI crawlers (such as: Anthropic), cloud/hosting providers, datacenters...
+  by matching their WHOIS organization against the words listed on `keywords.txt`.
+
+  You can set several folders of logs on `sources.txt` to -sneak- all your
+  projects at once (compressed `.gz` logs are also analyzed). Finally you can
+  generate a report with the results or send them to a list of email recipients
   like an alert.
 
 ----------
@@ -25,19 +32,26 @@ Apache web logs sneaker - 2016/2022 - by psy [03c8.net]
   PyDog4Apache runs on many platforms. It requires Python (3.x.y) and the following libraries:
 
        python3-pip - Python package installer
-       ipwhois (0.10.3)  - Retrieve and parse whois data for IPv4 and IPv6 addresses.
+       ipwhois (1.3.0)  - Retrieve and parse whois data for IPv4 and IPv6 addresses.
 
   On Debian-based systems (ex: Ubuntu), run: 
 
-       sudo apt-get install python3-pip && sudo pip3 install ipwhois
+       sudo apt-get install python3-pip && pip3 install ipwhois --user
 
-  Or:
+  Or to pin the tested version:
 
-       sudo apt-get install python3-pip && pip3 install ipwhois==0.10.3 --user
+       pip3 install -r docs/requirements.txt --user
 
   Source libs:
 
-       * Pypi-ipwhois: https://pypi.python.org/pypi/ipwhois/
+       * Pypi-ipwhois: https://pypi.org/project/ipwhois/
+
+----------
+
+#### Configuring:
+
+  - `sources.txt` : one folder per line with the Apache logs to analyze (default: `/var/log/apache2`).
+  - `keywords.txt` : one keyword per line to look for on the WHOIS network description.
 
 ----------
 
@@ -79,7 +93,7 @@ Apache web logs sneaker - 2016/2022 - by psy [03c8.net]
 
 #### Contribute: 
 
-  To make donations use the following hash:
+  To make donations use the following hashes:
   
-    - Bitcoin: 19aXfJtoYJUoXEZtjNwsah2JKN9CK5Pcjw
-
+    - Bitcoin [BTC]: 19aXfJtoYJUoXEZtjNwsah2JKN9CK5Pcjw
+    - Ecoin [ECO]: EZnYs33TG87ZzBWgADrj8653s3bPUqreW9

@@ -1,68 +1,273 @@
-Estate
-Bureau
-Army
-Association
-Bank
-Business
-Center
-Company
-Office
-Military
-Federal
-Consultory
-Academy
-Financial
-International
-Department
-Lawyers
-Ministery
-National
-Security
-Industry
-Agency
 Police
-Shop
-Government
-Educational
-Team
-Group
-University
-Hospital
-School
-Laboratory
-Society
-Estado
-Bufete
-Ejercito
-Asociacion
-Banco
-Negocios
-Oficina
+Policia
+Policía
+Direccion General de la Policia
+National Police
+Federal Police
+State Police
+Metropolitan Police
+Police Department
+Police Nationale
+Polizei
+Polizia
+Politie
+Politia
+Politsei
+Law Enforcement
+Sheriff
+Constabulary
+Gendarmerie
+Gendarmeria
+Guardia Civil
+Carabinieri
+Comisaria
+Prefecture
+Prefectura
+Department of Defense
+Department of Defence
+United States Department of Defense
+Ministry of Defense
+Ministry of Defence
+Ministero della Difesa
+Ministerio de Defensa
+Ministere des Armees
+Difesa
+Defensa
+Defense Nationale
+Bundeswehr
+Verteidigung
+Military
 Militar
-Consultoria
+Armed Forces
+Fuerzas Armadas
+Army
+Ejercito
+Armee
+Esercito
+Navy
+Naval
+Armada
+Marina Militare
+Air Force
+Marine Corps
+National Guard
+Coast Guard
+Pentagon
+Arsenal
+Garrison
+Defense Information Systems
+Cyber Command
+DARPA
+NATO
+Government
+Gobierno
+Gubernamental
+Government Network
+Governmental
+Federal Government
+National Government
+State Government
+Shared Services Canada
+European Commission
+Israeli Government Network
+Ministry
+Ministerio
+Ministere
+Ministero
+Ministerium
+Bundesamt
+Bundesministerium
+ITZBUND
+Department
+Federal Bureau
+Bureau of Investigation
+Secret Service
+Homeland Security
+National Security Agency
+Central Intelligence
+Intelligence
+Counterintelligence
+Surveillance
+GCHQ
+Interpol
+Europol
+Parliament
+Parlamento
+Senate
+Congress
+Embassy
+Embajada
+Consulate
+Consulado
+Diplomatic
+Customs
+Aduana
+Border Protection
+Treasury
+Hacienda
+Tesoreria
+Internal Revenue
+Taxation
+Immigration
+Penitentiary
+Penitenciario
+Prison
+Prision
+Correctional
+Court
+Courthouse
+Tribunal
+Justice
+Department of Justice
+Judicial
+Prosecutor
+Fiscalia
+Attorney General
+District Attorney
+Juzgado
+Lawyers
 Abogados
 Abogacia
-Financiera
-Ministerio
-Seguridad
-Agencia
-Policia
-Tienda
-Gobierno
-Compañia
-Nacional
-Educacion
-Centro
-Equipo
-Grupo
-Internacional
+Law Firm
+Bufete
+Notaria
+Ayuntamiento
+Diputacion
+Generalitat
+Consejeria
+Municipality
+Municipal
+Municipio
+Comune
+Regione
+Province
+Provincial
+Council
+Commission
+Authority
+Agency
+Public Administration
+Administracion Publica
+University
 Universidad
-Industria
-Escuela
-Laboratorio
-Sociedad
-Contraloria
-Guardia
+Universitat
+Universita
+Universite
+Universidade
+College
+Institute
+Instituto
+Institut
+Academy
 Academia
-Tor
-Proxy
+Faculty
+Campus
+Research
+Investigacion
+Laboratory
+Laboratorio
+Science
+Education
+Educacion
+Foundation
+Fundacion
+Hospital
+Clinic
+Clinica
+Medical Center
+Health Service
+Healthcare
+Sanidad
+Krankenhaus
+Ospedale
+Bank
+Banco
+Banca
+Banque
+Banking
+Central Bank
+Federal Reserve
+Financial
+Finance
+Investment
+Insurance
+Seguros
+Brokerage
+Exchange
+Telecom
+Telecommunications
+Telecomunicaciones
+Communications
+Comunicaciones
+Networks
+Backbone Network
+Internet Service
+Broadband
+Wireless
+Satellite
+Datacenter
+Data Center
+Data Centre
+Colocation
+Dedicated Server
+Dedicated Servers
+Virtual Server
+Web Hosting
+Hosting
+Cloud
+Google
+Microsoft
+Amazon
+Amazon Technologies
+Apple
+Facebook
+Meta Platforms
+Cloudflare
+Akamai
+Fastly
+Alibaba Cloud
+Tencent
+Huawei
+Oracle
+Hetzner
+OVH
+DigitalOcean
+The Constant Company
+Hurricane Electric
+M247
+Censys
+Anthropic
+Corporation
+Corporate
+Enterprise
+Industries
+Industrial
+Technologies
+Solutions
+Systems
+Holdings
+Group
+Media
+Broadcasting
+Television
+Newspaper
+Publishing
+News Agency
+Association
+Asociacion
+Organization
+Organizacion
+Society
+Sociedad
+Federation
+Federacion
+Union
+Syndicate
+Contraloria
+Seguridad Nacional
+National Security
+Security
+Sicherheit
+Sicurezza
+Seguranca
+Securite
