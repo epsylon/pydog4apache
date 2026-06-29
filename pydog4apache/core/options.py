@@ -17,6 +17,7 @@ class PyDog4ApacheOptions(optparse.OptionParser):
                            version='\nVersion: v0.3 (2026) - https://pydog4apache.03c8.net\n')
         self.add_option("-u", "--update", action="store_true", dest="update", help="check for latest stable version")
         self.add_option("-v", "--verbose", action="store_true", dest="verbose", help="active verbose output")
+        self.add_option("-f", "--flush-cache", action="store_true", dest="flush", help="delete whois cache (re-query all IPs)")
         group1 = optparse.OptionGroup(self, "*Reporting*")
         group1.add_option("-r", action="store", dest="file", help="generate file with results (ex: -r 'visitants.txt')")
         group1.add_option("-n", action="store", dest="emails", help="notify via email (foo@email.net,bar@email.org,...)")

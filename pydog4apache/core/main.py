@@ -7,7 +7,7 @@ You should have received a copy of the GNU General Public License along
 with PyDog4Apache; if not, write to the Free Software Foundation, Inc., 51
 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
-import os, traceback, sys, re, gzip, datetime, string, stat
+import os, traceback, sys, re, gzip, datetime, string, stat, json
 from .options import PyDog4ApacheOptions
 from .update import Updater
 
@@ -23,7 +23,10 @@ DEBUG = 0
 class PyDog4Apache(object):
     def __init__(self):
         self.visitants = {} # visitants
-        self.visitants_ips = [] # used to not repeat checks
+        self.visitants_ips = set() # used to not repeat checks (per run)
+        self.whois_cache = {} # persisted ip -> whois description (across runs)
+        self.cache_file = 'whois_cache.json'
+        self.analyzed_logs = [] # logs read on this run
 
     def set_options(self, options):
         self.options = options
@@ -37,12 +40,12 @@ class PyDog4Apache(object):
 
     def banner(self):
         print('='*75, "\n")
-        print(" ____        ____              _  _     _                     _          ")
-        print("|  _ \ _   _|  _ \  ___   __ _| || |   / \   _ __   __ _  ___| |__   ___ ")
-        print("| |_) | | | | | | |/ _ \ / _` | || |_ / _ \ | '_ \ / _` |/ __| '_ \ / _ |")
-        print("|  __/| |_| | |_| | (_) | (_| |__   _/ ___ \| |_) | (_| | (__| | | |  __/")
-        print("|_|    \__, |____/ \___/ \__, |  |_|/_/   \_\ .__/ \__,_|\___|_| |_|\___|")
-        print("       |___/             |___/              |_|                          ")
+        print(r" ____        ____              _  _     _                     _          ")
+        print(r"|  _ \ _   _|  _ \  ___   __ _| || |   / \   _ __   __ _  ___| |__   ___ ")
+        print(r"| |_) | | | | | | |/ _ \ / _` | || |_ / _ \ | '_ \ / _` |/ __| '_ \ / _ |")
+        print(r"|  __/| |_| | |_| | (_) | (_| |__   _/ ___ \| |_) | (_| | (__| | | |  __/")
+        print(r"|_|    \__, |____/ \___/ \__, |  |_|/_/   \_\ .__/ \__,_|\___|_| |_|\___|")
+        print(r"       |___/             |___/              |_|                          ")
         print(self.optionParser.description, "\n")
         print('='*75)
 
@@ -73,7 +76,7 @@ class PyDog4Apache(object):
             root = self.is_readable(folder)
             if root == None: # wrong folder
                 print("\n[Error] This source: [", folder, "] is not valid... [Passing!]")
-            if root is 0: # root needed
+            if root == 0: # root needed
                 check_perms = self.try_running(self.check_root, "\n[Error] Internal error checking root permissions.")
 
     def extract_logs(self): # extract logs from folder (ex: 'sources.txt')
@@ -95,25 +98,46 @@ class PyDog4Apache(object):
                 print('\n[Error] Cannot found:', 'sources.txt', "[Aborting!]\n")
                 sys.exit(2)
 
-    def extract_whois(self, ip): # extract whois description
+    def load_cache(self): # load persisted whois results (avoid re-querying known IPs)
+        try:
+            if os.path.exists(self.cache_file):
+                with open(self.cache_file) as f:
+                    self.whois_cache = json.load(f)
+        except:
+            self.whois_cache = {}
+
+    def save_cache(self): # persist whois results atomically
+        try:
+            tmp = self.cache_file + '.tmp'
+            with open(tmp, 'w') as f:
+                json.dump(self.whois_cache, f)
+            os.replace(tmp, self.cache_file)
+        except:
+            pass
+
+    def extract_whois(self, ip): # extract whois description ("" = no descr, None = lookup failed)
         try:
             if re.match(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}', ip): # only IPs
                 w = IPWhois(ip, timeout=5) # timeout 5
                 res = w.lookup_whois(retry_count=2) # legacy whois / retries 2
                 descr = res["nets"][0]['description']
+                if descr is None:
+                    descr = ""
             else:
-                descr = None
+                descr = ""
         except:
             descr = None
         return descr
 
     def is_valid_ip(self, ip): # extract visitors IP / perform whois
-        if not re.match(r'^127\.\d{1,3}\.\d{1,3}\.\d{1,3}', ip) or re.match(r'^10\.\d{1,3}\.\d{1,3}\.\d{1,3}', ip) or re.match(r'^192.168\.\d{1,3}\.\d{1,3}', ip) or re.match(r'^172.(1[6-9]|2[0-9]|3[0-1]).[0-9]{1,3}.[0-9]{1,3}', ip) or ip.startswith('localhost'): # non LAN IP
-            if ip not in self.visitants_ips: # create a list with non repeated IPs
-                if ip[0].isdigit(): # parse if IP starts with a number
-                    self.visitants_ips.append(ip)
-                    ip_found = True
-                    return ip_found
+        if not ip or not ip[0].isdigit(): # parse only if IP starts with a number
+            return
+        if (re.match(r'^127\.', ip) or re.match(r'^10\.', ip) or re.match(r'^192\.168\.', ip) or re.match(r'^172\.(1[6-9]|2[0-9]|3[0-1])\.', ip) or ip.startswith('localhost')): # skip LAN / localhost
+            return
+        if ip in self.visitants_ips: # do not repeat IPs on this run
+            return
+        self.visitants_ips.add(ip)
+        return True
 
     def check_visitants(self, descr): # check visitors list
         try:
@@ -152,47 +176,62 @@ class PyDog4Apache(object):
         if not self.keys:
             print("\n[Error] Imposible to retrieve 'visitants' from file... [Aborting!]\n")
             return
+        if self.options.flush: # forget known IPs -> re-query whois of all of them
+            try:
+                if os.path.exists(self.cache_file):
+                    os.remove(self.cache_file)
+                    print("\n[Info] WHOIS cache flushed... [Re-querying all IPs!]")
+            except:
+                print("\n[Error] Cannot flush WHOIS cache:", self.cache_file, "[Passing!]")
+        self.load_cache() # reuse known whois results, only query new IPs
         for folder in logs:
             if not folder.endswith('/'):
                 folder = folder + "/"
             try:
                 listing = os.listdir(folder)
-                for log in listing:
-                    if self.options.verbose:
-                        print("[Info] Analyzing:", folder+log)
-                    if log.endswith('.gz'): # also read on compressed logs
-                        with gzip.open(folder+log, 'r') as f:
-                            dog_sniff = f.readlines()
-                            dog_sniff = [ dog_sniff[0].decode() for sniff in dog_sniff ]
-                    else:
-                        try:
-                            f = open(folder+log)
-                            dog_sniff = f.readlines()
-                        except:
-                            return
-                    if dog_sniff:
-                        sep = '-'
-                        sep2= '['
-                        for record in dog_sniff:
-                            ip = record.split(sep, 1)[0]
-                            ip = ''.join(ip.split())
-                            ip_found = self.is_valid_ip(ip)
-                            if ip_found is True: # extract info
-                                if self.options.verbose:
-                                    print("    |-> IP Found:", ip)
-                                date = [record.split(']')[0] for p in record.split('[') if ']' in p]
-                                for d in date:
-                                    date_visit = d.split(sep2, 1)[1]
-                                descr = self.extract_whois(ip)
-                                if descr is not None:
-                                    if self.options.verbose:
-                                        print("    |-> WHOIS Description:", descr)
-                                    key = self.check_visitants(descr)
-                                    if key:
-                                        self.visitants[str(ip)] = "[ " + str(key.upper()) + " ]" + " | " + str(str(descr) + " | " + str(date_visit) + " | " + str(folder+log))
-                    f.close()
             except:
-                pass
+                continue
+            sep = '-'
+            sep2= '['
+            for log in listing:
+                path = folder + log
+                if self.options.verbose:
+                    print("[Info] Analyzing:", path)
+                self.analyzed_logs.append(path)
+                try:
+                    if log.endswith('.gz'): # also read on compressed logs
+                        f = gzip.open(path, 'rt', errors='replace')
+                    else:
+                        f = open(path, errors='replace')
+                except:
+                    continue
+                try:
+                    for record in f: # stream line by line (do not load whole file)
+                        ip = record.split(sep, 1)[0]
+                        ip = ''.join(ip.split())
+                        if self.is_valid_ip(ip) is not True:
+                            continue
+                        if self.options.verbose:
+                            print("    |-> IP Found:", ip)
+                        date_visit = ""
+                        date = [record.split(']')[0] for p in record.split('[') if ']' in p]
+                        for d in date:
+                            date_visit = d.split(sep2, 1)[1]
+                        if ip in self.whois_cache: # cached -> no whois query
+                            descr = self.whois_cache[ip]
+                        else: # new IP -> query whois and cache the result
+                            descr = self.extract_whois(ip)
+                            if descr is not None: # do not cache failed lookups (retry next run)
+                                self.whois_cache[ip] = descr
+                        if descr:
+                            if self.options.verbose:
+                                print("    |-> WHOIS Description:", descr)
+                            key = self.check_visitants(descr)
+                            if key:
+                                self.visitants[str(ip)] = "[ " + str(key.upper()) + " ]" + " | " + str(str(descr) + " | " + str(date_visit) + " | " + str(path))
+                finally:
+                    f.close()
+        self.save_cache() # persist whois results for next run (cron)
         print("\n"+"="*40+"\n")
         if self.options.file: # export results to file
             namefile = str(self.options.file)
@@ -200,21 +239,17 @@ class PyDog4Apache(object):
             self.report.write("# Apache web logs sneaker - 2016/2026 - by psy (https://03c8.net)\n")
             self.report.write("# Project: https://code.03c8.net/epsylon/pydog4apache\n")
             self.report.write("# Reported at: " + str(datetime.datetime.now()) + "\n\n")
+            self.report.write("Logs Analyzed:\n\n")
+            for log in self.analyzed_logs:
+                self.report.write(" -"+log+"\n")
+            self.report.write("\nResults:\n\n")
         for key,val in list(self.visitants.items()):
             print(("{} -> {}".format(key, val))+"\n")
             if self.options.file:
-                self.report.write("Logs Analyzed:\n\n")
-                for log in listing:
-                    self.report.write(" -"+log+"\n")
-                self.report.write("\nResults:\n\n")
                 self.report.write(key + " -> " + val + "\n")
         if not list(self.visitants.items()):
             print("[Info] Not any 'keyword' found on your 'visitants'... [Exiting!]\n")
             if self.options.file:
-                self.report.write("Logs Analyzed:\n\n")
-                for log in listing:
-                    self.report.write(" -"+log+"\n")
-                self.report.write("\nResults:\n\n")
                 self.report.write(" -Not any 'keyword' found on your 'visitants'...\n")
         if self.options.file: # close file containter
             self.report.close()
@@ -227,7 +262,7 @@ class PyDog4Apache(object):
             self.notify.write("# Project: https://code.03c8.net/epsylon/pydog4apache\n")
             self.notify.write("# Reported at: " + str(datetime.datetime.now()) + "\n\n")
             self.notify.write("Logs Analyzed:\n\n")
-            for log in listing:
+            for log in self.analyzed_logs:
                 self.notify.write(" -"+log+"\n")
             self.notify.write("\nResults:\n\n")
             for key,val in list(self.visitants.items()):

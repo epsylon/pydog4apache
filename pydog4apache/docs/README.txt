@@ -70,6 +70,11 @@ Apache web logs sneaker - 2016/2026 - by psy
   - keywords.txt : one keyword per line to look for on the WHOIS network
                    description. Matching is case-insensitive and by substring.
 
+  - whois_cache.json : auto-generated cache of WHOIS results (ip -> network
+                       description). It lets later runs query the WHOIS of only
+                       *new* IPs, so it is safe (and fast) to run from a crontab.
+                       Delete it (or use --flush-cache) to re-query everything.
+
 ###############################
 # HowTo
 ###############################
@@ -77,14 +82,15 @@ Apache web logs sneaker - 2016/2026 - by psy
   Usage: pydog4apache.py [options]
 
   Options:
-    --version      show program's version number and exit
-    -h, --help     show this help message and exit
-    -u, --update   check for latest stable version
-    -v, --verbose  active verbose output
+    --version          show program's version number and exit
+    -h, --help         show this help message and exit
+    -u, --update       check for latest stable version
+    -v, --verbose      active verbose output
+    -f, --flush-cache  delete whois cache (re-query all IPs)
 
     *Reporting*:
-      -r FILE      generate file output with 'visitants'
-      -n EMAILS    notify via email (foo@email.net,bar@email.org,...)
+      -r FILE          generate file output with 'visitants'
+      -n EMAILS        notify via email (foo@email.net,bar@email.org,...)
 
 ###############################
 # Examples
@@ -109,6 +115,15 @@ Apache web logs sneaker - 2016/2026 - by psy
   Launch it as daemon (notify via email when finish):
 
     python3 pydog4apache -n 'epsylon@riseup.net' &
+
+  Re-query the WHOIS of every IP (ignore the cache):
+
+    python3 pydog4apache --flush-cache
+
+  Run periodically from a crontab (only *new* IPs are queried). Note the 'cd':
+  'sources.txt', 'keywords.txt' and 'whois_cache.json' live on the working dir:
+
+    */30 * * * * cd /path/to/pydog4apache && python3 pydog4apache -n 'root@localhost'
 
 ###############################
 # Updating

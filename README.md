@@ -52,6 +52,7 @@ Apache web logs sneaker - 2016/2026 - by psy [03c8.net]
 
   - `sources.txt` : one folder per line with the Apache logs to analyze (default: `/var/log/apache2`).
   - `keywords.txt` : one keyword per line to look for on the WHOIS network description.
+  - `whois_cache.json` : auto-generated cache of WHOIS results.
 
 ----------
 
@@ -80,6 +81,15 @@ Apache web logs sneaker - 2016/2026 - by psy [03c8.net]
   Launch it as daemon (notify via email when finish):
 
     python3 pydog4apache -n epsylon@riseup.net &
+
+  Re-query the WHOIS of every IP (ignore the cache):
+
+    python3 pydog4apache --flush-cache
+
+  Run periodically from a crontab (only *new* IPs are queried). Mind the `cd`:
+  `sources.txt`, `keywords.txt` and `whois_cache.json` live on the working dir:
+
+    */30 * * * * cd /path/to/pydog4apache && python3 pydog4apache -n root@localhost
 
 ----------
 
